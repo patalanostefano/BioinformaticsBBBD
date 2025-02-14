@@ -1,46 +1,79 @@
-# BioinformaticsBBBD
-This repository contains the code of the Bioinformatics project: Blood Biomarkers for brain diseases.
-A differential expression analysis was conducted on AD,MCI patients blood expression profiles from GEO datasets: GSE63060,GSE63061, the results were mapped to the organ enriched genes (according to NCBI definition: "a gene is enriched if it is expressed at least four times higher in a single organ compared to any other organ.") from GTEx-Bulk-tissue-expression-V8 dataset using gene TPM.
+# BBBD: Blood Biomarkers for Brain Diseases
 
+## Overview
+This project analyzes blood-based biomarkers for brain diseases, particularly focusing on Alzheimer's Disease (AD) and Mild Cognitive Impairment (MCI). The analysis uses gene expression data from blood samples and cross-references it with tissue-specific expression data to identify brain-enriched genes.
 
-### Contents
-- [Datasets](#DATASETS)
-- [Data Preprocessing](#PREPROCESSING)
-- [Deg](#DEG)
-- [Results](#RESULTS)
+## Datasets
 
+### GEO AddNeuroMed Cohort
+- **Batch 1 (GSE63060)**
+  - 145 AD samples
+  - 80 MCI samples
+  - 104 healthy controls (CTL)
+  
+- **Batch 2 (GSE63061)**
+  - 175 AD samples
+  - 78 MCI samples
+  - 135 healthy controls (CTL)
 
+### GTEx Data
+- Version: V8
+- Scope: Bulk tissue expression
+- Coverage: 56,200 genes across 49 tissues (including 18 brain tissues)
+- Measurement: Gene TPM (Transcripts Per Million)
 
+## Methodology
 
-### DATASETS
+### Data Preparation
 
-GSE63060,GSE63061 <br>
-GTEx-Bulk-tissue-expression-V8 <br>
+1. **Batch Normalization**
+   - Cross-batch normalization for GEO datasets
+   - Standardization of expression values
 
+2. **Brain-Enriched Gene Filtering**
+   Based on NCBI definition: genes expressed at least 4x higher in brain compared to other organs
+   
+   Two filtering approaches:
+   - **Filtering 1**: mean(brain subtissues) > 4 * mean(other tissues)
+   - **Filtering 2**: brain subtissue > 4 * mean(other tissues)
 
+### Data Processing Pipeline
 
+1. **Initial Filtering**
+   - Row means filtering
+   - Interquartile Range (IQR) filtering
+   - Log Fold Change (LogFC) filtering
 
-### PREPROCESSING
+2. **Statistical Analysis**
+   - P-value computation
+   - P-value adjustment for multiple testing
+   - Significance filtering (threshold = 0.01)
 
-Batch normalization for GEO datasets as 63060, 63061 were 2 batches of the same cohort <br>
-Brain tissues columns extraction for GTEx data <br>
-
-
-
-
-### DEG 
-
-IQR filtering <br>
-LogFC filtering <br>
-pval-adj filtering <br>
-deg analysis <br>
-
-
-
-
-### RESULTS
+## Results
 
 An enrichment analysis was conducted on the resulting genes, using Enrichr and EnrichrKG. Finding a strong (p-val: e-28) correlation between 2 out of 11 genes involved in ATP synthesis mitochondrial processes with many brain diseases. <br>
 Recent articles confirm (using different methods: LASSO, SVM) these two genes are candidates to predict LO-AD and MCI. <br> 
 Further analysis will be conducted on other GWAS datasets as ADNI. 
 Also, as partial inhibition of mitochondrial-complex-I has been exploited as therapeuthic target for AD, further analysis can be conducted on these 2-11 genes using MIENTURENET to evaluate the potential RNA therapeutic approaches for AD. <br>
+
+## Future Directions
+
+### Planned Extensions
+1. **ADNI Dataset Integration**
+   - Additional validation of findings
+   - Cross-cohort analysis
+
+2. **GWAS Analysis**
+   - Integration with genetic variant data
+   - Investigation of genetic associations
+
+
+## Data Access
+- GEO datasets: GSE63060, GSE63061
+- GTEx data: V8 release
+
+
+## Author
+Stefano Patalano (2024)
+
+
